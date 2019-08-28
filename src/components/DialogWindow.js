@@ -119,7 +119,7 @@ class DialogWindow extends PureComponent {
 
     loadTextsApi(leadId)
       .then(({ data: texts }) => {
-        console.log('texts', texts);
+        // console.log('texts', texts);
         const updatedTextsData = {
           texts: sortBy(texts, ['date'])
         };
@@ -234,7 +234,7 @@ class DialogWindow extends PureComponent {
   }
 
   handleFreeSpaceClick = () => {
-    console.log('this.props.view', this.props.view);
+    // console.log('this.props.view', this.props.view);
     this.props.view === CONST.DIALOG_WINDOW_VIEWS.collapsed ?
     this.setOpenedDialogView() :
     this.setCollapsedDialogView() };
@@ -245,7 +245,7 @@ class DialogWindow extends PureComponent {
     return texts.map(({ date, body, isReply, isSending, isDelivered, reason }, index) => {
 
       return (
-        <div key={`${date}-${index}`}>
+        <div data-test={`message${index}`} key={`${date}-${index}`}>
           <div className={`dialog-message ${isReply ? 'dialog-message--reply' : ''} flex-row`}>
             {isReply && (
               <a
@@ -295,14 +295,18 @@ class DialogWindow extends PureComponent {
         inverted
       />
     );
-
     return (
       <ClickOutside onClickOutside={this.handleClickOutside} onClick={this.handleClickInside}>
         <div
           data-testid={`message-dialog-for-${leadId}`}
           className={`content-box dialog-window ${isActive ? 'dialog-window--active' : ''} ${isCollapsed ? 'dialog-window--collapsed' : ''}`}
         >
-          <Loader size='large' active={loading} className="dialog-window__loader" />
+          <Loader
+            data-test={loading && 'loader'}
+            size='large'
+            active={loading}
+            className="dialog-window__loader"
+          />
 
           <div className={`flex-row dialog-window__header`}>
             {leadNameElement}
@@ -329,6 +333,7 @@ class DialogWindow extends PureComponent {
           </div>
           {!isCollapsed && (
             <div
+              data-test={loading && "message-container"}
               ref={messagesNode => this.messagesNode = messagesNode}
               className="dialog-window__messages"
             >

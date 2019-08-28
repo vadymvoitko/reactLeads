@@ -46,12 +46,19 @@ class Messenger extends PureComponent {
           <h2>Leads list</h2>
           <ul>
             {leads.map(lead => (
-              <li onClick={() => this.handleLeadClick(lead)}>{lead.leadName}</li>
+              <li
+                  id={lead.leadId}
+                  data-test={`lead${lead.leadId}`}
+                  onClick={() => this.handleLeadClick(lead)}
+              >
+                {lead.leadName}
+              </li>
             ))}
           </ul>
         </div>
         {visibleDialogs.map(visibleDialog => (
           <DialogWindow
+            data-test={`dialog-window${visibleDialog.leadId}`}
             key={visibleDialog.leadId}
             dispatch={dispatch}
             {...visibleDialog}
