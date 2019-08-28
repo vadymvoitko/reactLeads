@@ -74,13 +74,17 @@ describe("Precess leads", () => {
       expect(ApiMessanger.loadLeadInfoApi).toHaveBeenCalledWith(i + 1);
       expect(ApiMessanger.loadLeadInfoApi).not.toHaveBeenCalledWith(i + 2);
     });
+  })
+});
 
+describe("Process leads 2", () => {
+  leadsInit.forEach((lead, i) => {
     it('should send update request', async () => {
       const dispatch = jest.fn();
-      mount(
+      const instance = mount(
         <DialogWindow
-            dispatch={dispatch}
-            {...lead}
+          dispatch={dispatch}
+          {...lead}
         />
       );
       await loadLeadInfoApi(i + 1);
@@ -92,21 +96,21 @@ describe("Precess leads", () => {
         },
         type: "UPDATE_DIALOG"
       });
+      instance.unmount();
     });
 
     it('should send request for test and activate spiner', async () => {
       const dispatch = jest.fn();
-      target = shallow(
-          <DialogWindow
-              dispatch={dispatch}
-              {...lead}
-          />
+      const target = shallow(
+        <DialogWindow
+          dispatch={dispatch}
+          {...lead}
+        />
       );
       expect(findByAttr(target, `loader`).exists()).toBe(true);
       expect(ApiMessanger.loadTextsApi).toHaveBeenCalledWith(i + 1);
-      expect(ApiMessanger.loadTextsApi).not.toHaveBeenCalledWith(i + 2);
       await ApiMessanger.loadTextsApi();
       expect(findByAttr(target, `loader`).exists()).toBe(false);
     });
   })
-});
+})
