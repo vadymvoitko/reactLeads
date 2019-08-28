@@ -10,6 +10,12 @@ import DialogWindow from "../components/DialogWindow";
 import { loadLeadInfoApi } from '../api/messenger'
 Enzyme.configure({adapter: new Adapter()});
 
+const leadsInit = [
+  { leadId: 1, leadName: 'Lead Id1', phone: 2227778888 },
+  { leadId: 2, leadName: 'Lead Id2', phone: 2227778882 },
+  { leadId: 3, leadName: 'Lead Id3', phone: 2227778883 },
+];
+
 ApiMessanger.loadLeadInfoApi = jest.fn(leadId => new Promise((resolve) => {
   setTimeout(() => {
     resolve({
@@ -38,7 +44,7 @@ ApiMessanger.loadTextsApi = jest.fn((leadId) => {
   });
 });
 
-describe("Search component", () => {
+describe("Precess leads", () => {
   let target;
   beforeEach(() => {
     target = mount(
@@ -51,18 +57,12 @@ describe("Search component", () => {
     target.unmount();
   });
 
-  const leadsInit = [
-    { leadId: 1, leadName: 'Lead Id1', phone: 2227778888 },
-    { leadId: 2, leadName: 'Lead Id2', phone: 2227778882 },
-    { leadId: 3, leadName: 'Lead Id3', phone: 2227778883 },
-  ];
-
   it("renders", () => {
     expect(target.exists()).toBe(true);
   });
 
   it("renders leads", () => {
-    const leads = target.find('.leads-list > ul > li');
+    const leads = target.find('.leads-list li');
     expect(leads.length).toEqual(leadsInit.length);
   });
 
